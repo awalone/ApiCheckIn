@@ -38,13 +38,14 @@ When you installed requirements, navigate to your directory of project (where yo
 $ npm install
 ```
 
-##Add a platform :
+##Build and add a platform :
 
 Before testing the app. You need to add an IOS or Android platform to the project :
 
 (Replace **android** with **ios** after **ionic platform add** according to your preferences)
 
 ```bash
+$ ionic build
 $ ionic platform add android
 ```
 
