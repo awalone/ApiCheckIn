@@ -4,7 +4,9 @@ import { MyApp } from './app.component';
 import { SendPage } from '../pages/send/send';
 import { ListPage } from '../pages/list/list';
 import { MapPage } from '../pages/map/map';
+import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
+import { AuthService } from '../providers/auth-service';
 
 @NgModule({
   declarations: [
@@ -12,6 +14,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     SendPage,
     ListPage,
     MapPage,
+    LoginPage,
     TabsPage
   ],
   imports: [
@@ -23,8 +26,9 @@ import { TabsPage } from '../pages/tabs/tabs';
     SendPage,
     ListPage,
     MapPage,
+    LoginPage,
     TabsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [AuthService, {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}
