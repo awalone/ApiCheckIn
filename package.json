@@ -32,20 +32,14 @@
     "typescript": "2.0.9"
   },
   "cordovaPlugins": [
-    "cordova-plugin-whitelist",
+    "cordova-plugin-geolocation",
     "cordova-plugin-console",
-    "cordova-plugin-statusbar",
     "cordova-plugin-device",
     "cordova-plugin-splashscreen",
+    "cordova-plugin-whitelist",
+    "cordova-plugin-statusbar",
     "ionic-plugin-keyboard"
   ],
-  "cordovaPlatforms": [
-    "ios",
-    {
-      "platform": "ios",
-      "version": "",
-      "locator": "ios"
-    }
-  ],
+  "cordovaPlatforms": [],
   "description": "ApiCheckIn: An Ionic project"
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Platform, LoadingController, Loading } from 'ionic-angular';
+import { NavController, Platform, LoadingController, Loading, AlertController } from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 
 declare var google;
@@ -18,7 +18,7 @@ export class MapPage {
   geoOptions:any;
   position:any;
 
-  constructor(platform: Platform, public navCtrl: NavController, private loadingCtrl: LoadingController) {
+  constructor(platform: Platform, public navCtrl: NavController, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
 
     this.geoOptions = {
       timeout:15000, 
@@ -64,6 +64,32 @@ export class MapPage {
 
         this.markPosition(this.position, "You are here");
         this.loading.dismiss();
+    }).catch((error) => {
+
+      console.log(error.code + " : " + error.message);
+      this.loading.dismiss();
+      let confirm = this.alertCtrl.create({
+        title: error.message,
+        message: 'Try again ?',
+        buttons: [
+          {
+            text: 'No',
+            handler: () => {
+              console.log('Disagree clicked');
+            }
+          },
+          {
+            text: 'Yes',
+            handler: () => {
+              console.log('Retry');
+              this.loadGoogleMaps();
+              
+            }
+          }
+        ]
+      });
+      confirm.present();
+
     });
 
   }
