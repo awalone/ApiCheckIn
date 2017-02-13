@@ -9,7 +9,6 @@ import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { AuthService } from '../providers/auth-service';
-import { Geoloc } from '../providers/geoloc-service';
 
 @NgModule({
   declarations: [
@@ -32,6 +31,6 @@ import { Geoloc } from '../providers/geoloc-service';
     LoginPage,
     TabsPage
   ],
-  providers: [AuthService, Geoloc, {provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [AuthService, {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}
