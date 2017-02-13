@@ -1,12 +1,15 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
+
 import { SendPage } from '../pages/send/send';
 import { ListPage } from '../pages/list/list';
 import { MapPage } from '../pages/map/map';
 import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
+
 import { AuthService } from '../providers/auth-service';
+import { Geoloc } from '../providers/geoloc-service';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,6 @@ import { AuthService } from '../providers/auth-service';
     LoginPage,
     TabsPage
   ],
-  providers: [AuthService, {provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [AuthService, Geoloc, {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}

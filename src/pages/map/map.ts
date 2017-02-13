@@ -1,18 +1,96 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../providers/auth-service';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform, LoadingController, Loading } from 'ionic-angular';
+import { Geolocation } from 'ionic-native';
+
+declare var google;
 
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html'
 })
+
+
+
 export class MapPage {
+  loading: Loading;
 
-  constructor(public navCtrl: NavController, private auth: AuthService) {
+  map: any;
+  geoOptions:any;
+  position:any;
 
-    console.log(auth.currentUser.email);
-    console.log(auth.currentUser.token);
+  constructor(platform: Platform, public navCtrl: NavController, private loadingCtrl: LoadingController) {
+
+    this.geoOptions = {
+      timeout:15000, 
+      enableHightAccuracy: true
+    };
+    
   }
+
+  ngAfterViewInit() {
+
+    /* CHECK FOR NETWORK FIRST */
+    this.loadGoogleMaps();
+  }
+
+  loadGoogleMaps() {
+    
+
+
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait for geolocation ...'
+    });
+    this.loading.present();
+
+
+    Geolocation.getCurrentPosition(this.geoOptions).then((resp) => {
+        
+        console.log("lat =" + resp.coords.latitude);
+        console.log("lng =" + resp.coords.longitude);
+
+        this.position = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
+
+        let mapOptions = {
+          center: this.position,
+          zoom: 18,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        
+        this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        for(var a in this.position){
+          console.log(this.position[a]);
+        }
+
+        this.markPosition(this.position, "You are here");
+        this.loading.dismiss();
+    });
+
+  }
+
+
+
+  private markPosition(position:any, positionInfos:string) {
+      let marker = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: position,
+      });
+
+      let info = new google.maps.InfoWindow ({
+        content: positionInfos
+      });
+
+      google.maps.event.addListener(marker,'click', function() {
+        info.open(this.map,marker);
+      })
+      
+      marker.setMap(this.map);
+      return marker;
+  }
+
+
+
 
 
 }

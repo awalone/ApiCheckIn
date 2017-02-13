@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Http, Headers, URLSearchParams} from '@angular/http';
+import { Http, Headers, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
@@ -17,11 +17,7 @@ export class User {
   token: string;
 
   constructor(mail: string, token: string) {
-
-    /* check local storage */
-    
     this.email = mail;
-
     this.token = token;
   }
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { App, NavController, NavParams, ToastController, LoadingController, Loading } from 'ionic-angular';
+import { NavController, ToastController, LoadingController, Loading } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { TabsPage } from '../tabs/tabs';
 
@@ -17,22 +17,21 @@ export class LoginPage {
   loading: Loading;
   registerCredentials = {email: '', password: ''};
 
-  constructor(public appCtrl: App, public navCtrl: NavController, public navParams: NavParams, private auth: AuthService,  public toastCtrl: ToastController, private loadingCtrl: LoadingController) {}
+  constructor(public navCtrl: NavController, private auth: AuthService,  public toastCtrl: ToastController, private loadingCtrl: LoadingController) {}
 
   ngOnInit() {
     console.log('ngOnInit LoginPage');
        
     if(localStorage.getItem('token') != null){
-      console.log("Logged In user (token found)");
+      console.log("User already logged in (token found)");
       this.showLoading(); 
       setTimeout(() => {
         this.loading.dismiss();
         this.auth.loadCurrentUser();
-        this.navCtrl.setRoot(TabsPage)
+        this.navCtrl.setRoot(TabsPage);
       })
     }
   }
-
 
 
   public login() {
