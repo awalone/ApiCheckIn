@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import {Http, Headers, URLSearchParams} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
@@ -15,10 +15,14 @@ export class User {
 
   email: string;
   token: string;
- 
+
   constructor(mail: string, token: string) {
+
+    /* check local storage */
+    
     this.email = mail;
-    this.token = name;
+
+    this.token = token;
   }
 }
 
@@ -28,37 +32,43 @@ export class User {
 export class AuthService {
 
   currentUser: User;
+  private ApiUrl : string ='http://checkin-api.dev.cap-liberte.com/auth';
 
   constructor(public http: Http) {
     console.log('AuthService Provider ctor');
   }
 
 
-  public login(credentials) {
+
+  public loginAttempt(credentials) {
     console.log('AuthService Provider login');
-    if (credentials.email === null || credentials.password === null) {
-      return Observable.throw("Please insert credentials");
-    } else {
-      return Observable.create(observer => {
 
-        // REQUEST API HERE
-        let access = (credentials.password === "pass" && credentials.email === "email");
-        this.currentUser = new User('email@email.com', 'Xx-NINJA-TOKEN-xX');
-        observer.next(access);
-        observer.complete();
-      });
-    }
+    let params = new URLSearchParams();
+    params.append('email', credentials.email);
+    params.append('password', credentials.password);
+    let postData = params.toString();
+
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    
+    return this.http.post(this.ApiUrl, postData, {headers: headers}).map((response : any) => {
+      this.currentUser = new User(credentials.email, response.json().token);
+      localStorage.setItem('email', credentials.email);
+      localStorage.setItem('token', response.json().token);
+    });
+
   }
 
-  public getUserInfo() : User {
-    console.log('AuthService Provider getUserInfo');
-    return this.currentUser;
+  public loadCurrentUser(){
+    this.currentUser = new User(localStorage.getItem('email'), localStorage.getItem('token'));
   }
-
+  
   public logout() {
     console.log('AuthService Provider logout');
     return Observable.create(observer => {
       this.currentUser = null;
+      localStorage.removeItem('email');
+      localStorage.removeItem('token');
       observer.next(true);
       observer.complete();
     });
