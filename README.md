@@ -30,12 +30,19 @@ $ npm install -g ionic cordova
 ```
 
 
-##Installation of dependencies :
+##Installation of dependencies and plugins :
 
 When you installed requirements, navigate to your directory of project (where you cloned the repository) and install dependencies packages by typing the following commands :
 
 ```bash
 $ npm install
+```
+
+Then you need to build the project one time before installing the plugins for ionic :
+
+```bash
+$ ionic build
+$ ionic state reset
 ```
 
 ##Build and add a platform :
@@ -45,7 +52,6 @@ Before testing the app. You need to add an IOS or Android platform to the projec
 (Replace **android** with **ios** after **ionic platform add** according to your preferences)
 
 ```bash
-$ ionic build
 $ ionic platform add android
 ```
 
