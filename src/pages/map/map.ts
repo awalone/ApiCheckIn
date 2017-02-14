@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Platform, LoadingController, Loading, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, Loading, AlertController } from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 
 declare var google;
@@ -18,7 +18,7 @@ export class MapPage {
   geoOptions:any;
   position:any;
 
-  constructor(platform: Platform, public navCtrl: NavController, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
 
     this.geoOptions = {
       timeout:15000, 
@@ -35,8 +35,6 @@ export class MapPage {
 
   loadGoogleMaps() {
     
-
-
     this.loading = this.loadingCtrl.create({
       content: 'Please wait for geolocation ...'
     });
@@ -57,10 +55,6 @@ export class MapPage {
         }
         
         this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        for(var a in this.position){
-          console.log(this.position[a]);
-        }
 
         this.markPosition(this.position, "You are here");
         this.loading.dismiss();
@@ -94,8 +88,6 @@ export class MapPage {
 
   }
 
-
-
   private markPosition(position:any, positionInfos:string) {
       let marker = new google.maps.Marker({
         map: this.map,
@@ -114,9 +106,4 @@ export class MapPage {
       marker.setMap(this.map);
       return marker;
   }
-
-
-
-
-
 }
