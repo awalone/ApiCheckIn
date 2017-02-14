@@ -1,8 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, Loading, AlertController } from 'ionic-angular';
-import { Geolocation } from 'ionic-native';
+import { Platform, NavController, LoadingController, Loading, AlertController } from 'ionic-angular';
+import { SendPage } from '../send/send';
 
-declare var google;
+
+import {
+ GoogleMap,
+ GoogleMapsEvent,
+ GoogleMapsLatLng,
+ CameraPosition,
+ GoogleMapsMarkerOptions,
+ GoogleMapsMarker
+} from 'ionic-native';
 
 @Component({
   selector: 'page-map',
@@ -14,96 +22,121 @@ declare var google;
 export class MapPage {
   loading: Loading;
 
-  map: any;
-  geoOptions:any;
-  position:any;
+  map: GoogleMap;
+  geolocationOptions: any;
+  userPosition: GoogleMapsLatLng;
+  cameraPos: CameraPosition
 
-  constructor(public navCtrl: NavController, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
+  checkInsVisible: boolean;
 
-    this.geoOptions = {
-      timeout:15000, 
-      enableHightAccuracy: true
+  constructor(public platform: Platform, public navCtrl: NavController, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
+
+    this.checkInsVisible = false; // default value will be configurage by user
+
+    this.geolocationOptions = {
+        enableHighAccuracy: true      // Force GPS -> default value will be configurage by user
     };
     
+    platform.ready().then(() => {
+        this.loadGoogleMaps();
+        this.locateUser();
+
+        if(this.checkInsVisible == true) {
+          this.checkInsVisible = false;
+          this.toggleCheckIns();
+        }
+    });
+
   }
 
-  ngAfterViewInit() {
 
-    /* CHECK FOR NETWORK FIRST */
-    this.loadGoogleMaps();
+  ngOnInit() {
+    console.log('ngOnInit MapPage');
+
   }
 
   loadGoogleMaps() {
-    
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait for geolocation ...'
+    this.map = new GoogleMap(document.getElementById('map'), {
+      'backgroundColor': 'white',
+      'controls': {
+        'compass': true,
+        'myLocationButton': true,
+        'indoorPicker': true,
+        'zoom': true
+      },
+      'gestures': {
+        'scroll': true,
+        'tilt': true,
+        'rotate': true,
+        'zoom': true
+      }
     });
-    this.loading.present();
+    this.map.one(GoogleMapsEvent.MAP_READY).then(() => console.log('Map is ready!'));
+  }
 
 
-    Geolocation.getCurrentPosition(this.geoOptions).then((resp) => {
-        
-        console.log("lat =" + resp.coords.latitude);
-        console.log("lng =" + resp.coords.longitude);
+  locateUser() {
+    this.map.getMyLocation(this.geolocationOptions).then((location) => {
+      console.log("location success");
+      console.log("lat = " + location.latLng.lat);
+      console.log("lng = " + location.latLng.lng);
 
-        this.position = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
+      this.userPosition = new GoogleMapsLatLng(location.latLng.lat, location.latLng.lng);
 
-        let mapOptions = {
-          center: this.position,
-          zoom: 18,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        
-        this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        this.markPosition(this.position, "You are here");
-        this.loading.dismiss();
+      this.showUserPositionOnMap();
     }).catch((error) => {
+      console.log("location error : " + error);
+    })
+  }
 
-      console.log(error.code + " : " + error.message);
-      this.loading.dismiss();
-      let confirm = this.alertCtrl.create({
-        title: error.message,
-        message: 'Try again ?',
-        buttons: [
-          {
-            text: 'No',
-            handler: () => {
-              console.log('Disagree clicked');
-            }
-          },
-          {
-            text: 'Yes',
-            handler: () => {
-              console.log('Retry');
-              this.loadGoogleMaps();
-              
-            }
-          }
-        ]
-      });
-      confirm.present();
+  showUserPositionOnMap() {
 
-    });
+    // create CameraPosition
+    this.cameraPos = {
+      target: this.userPosition,
+      zoom: 18,
+      tilt: 30
+    };
+
+    // move the map's camera to position
+    this.map.moveCamera(this.cameraPos);
 
   }
 
-  private markPosition(position:any, positionInfos:string) {
-      let marker = new google.maps.Marker({
-        map: this.map,
-        animation: google.maps.Animation.DROP,
-        position: position,
-      });
 
-      let info = new google.maps.InfoWindow ({
-        content: positionInfos
-      });
 
-      google.maps.event.addListener(marker,'click', function() {
-        info.open(this.map,marker);
-      })
+  toggleCheckIns() {
+    console.log('toggleCheckIns');
       
-      marker.setMap(this.map);
-      return marker;
+    if(this.checkInsVisible == true) {
+      console.log("Hide Check Ins");
+      this.map.clear();
+      this.checkInsVisible = false;
+    } else if (this.checkInsVisible == false) {
+      console.log("Show Check Ins");
+      
+      // create new marker
+      let markerOptions: GoogleMapsMarkerOptions = {
+        position: this.userPosition,
+        title: 'Marker'
+      };
+
+      this.map.addMarker(markerOptions).then((marker: GoogleMapsMarker) => {
+        marker.showInfoWindow();
+      });
+
+      this.checkInsVisible = true;
+    }
+
+
+
+  }
+
+  showOnMap(){
+    this.locateUser();
+    this.navCtrl.push(SendPage, {
+      userPositionLat : this.userPosition.lat,
+      userPositionLng : this.userPosition.lng
+    });
   }
 }

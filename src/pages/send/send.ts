@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
   selector: 'page-send',
@@ -8,8 +8,12 @@ import { NavController } from 'ionic-angular';
 })
 export class SendPage {
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public params: NavParams) {
 
   }
 
+  ngOninit() {
+    console.log("(send page) user position Lat = " + this.params.get('userPositionLat'));
+    console.log("(send page) user position Lat = " + this.params.get('userPositionLng'));
+  }
 }

@@ -6,6 +6,7 @@ import { SendPage } from '../pages/send/send';
 import { ListPage } from '../pages/list/list';
 import { MapPage } from '../pages/map/map';
 import { LoginPage } from '../pages/login/login';
+import { RegisterPage } from '../pages/register/register';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { AuthService } from '../providers/auth-service';
@@ -17,6 +18,7 @@ import { AuthService } from '../providers/auth-service';
     ListPage,
     MapPage,
     LoginPage,
+    RegisterPage,
     TabsPage
   ],
   imports: [
@@ -29,6 +31,7 @@ import { AuthService } from '../providers/auth-service';
     ListPage,
     MapPage,
     LoginPage,
+    RegisterPage,
     TabsPage
   ],
   providers: [AuthService, {provide: ErrorHandler, useClass: IonicErrorHandler}]
