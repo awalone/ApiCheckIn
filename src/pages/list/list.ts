@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Http} from '@angular/http';
 import { NavController } from 'ionic-angular';
+
+import { ConfigService } from '../../providers/config';
 import { MapPage } from '../map/map';
 
 @Component({
@@ -12,7 +14,7 @@ export class ListPage {
   SharesList : Array<Object>;
 
   
-  constructor( public http: Http, public navCtrl: NavController) {}
+  constructor( private config: ConfigService, public http: Http, public navCtrl: NavController) {}
 
   showOnMap(checkinIdToShowOnMap){
     this.navCtrl.push(MapPage, {
@@ -34,7 +36,7 @@ export class ListPage {
   }
 
   private requestShareList () {
-    this.http.get("http://checkin-api.dev.cap-liberte.com/checkin").subscribe ( data => {
+    this.http.get(this.config.apiUrl + this.config.apiVerbs.checkin).subscribe ( data => {
         this.SharesList = data.json();
     }, error => {
       console.log(JSON.stringify(error.json()));

@@ -9,6 +9,7 @@ import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { TabsPage } from '../pages/tabs/tabs';
 
+import { ConfigService } from '../providers/config';
 import { AuthService } from '../providers/auth-service';
 
 @NgModule({
@@ -34,6 +35,6 @@ import { AuthService } from '../providers/auth-service';
     RegisterPage,
     TabsPage
   ],
-  providers: [AuthService, {provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [ConfigService, AuthService, {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}
