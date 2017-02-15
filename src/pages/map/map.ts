@@ -130,7 +130,7 @@ export class MapPage {
 
   }
 
-  private showOnMap(){
+  private share(){
     this.locateUser();
     this.navCtrl.push(SendPage, {
       userPositionLat : this.userPosition.lat,
