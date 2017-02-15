@@ -44,6 +44,15 @@ Then you need to build the project one time before installing the plugins for io
 $ ionic build
 $ ionic state reset
 ```
+Then you need to install the plugin for Google Maps with your API KEY for ios/Android :
+
+[How to obtain your Google Maps API keys](https://github.com/mapsplugin/cordova-plugin-googlemaps/wiki/Tutorial-for-Mac#4a-obtain-the-google-maps-api-key-for-android)
+
+```bash
+$ ionic plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="YOUR_ANDROID_API_KEY_IS_HERE" --variable API_KEY_FOR_IOS="YOUR_IOS_API_KEY_IS_HERE"
+```
+
+
 
 ##Build and add a platform :
 
@@ -54,6 +63,7 @@ Before testing the app. You need to add an IOS or Android platform to the projec
 ```bash
 $ ionic platform add android
 ```
+
 
 ##Test/run the application :
 
@@ -72,6 +82,8 @@ $ ionic run android
 ```
 
 **Note :** 
-	You can deploy the app on your device (For Android : connect it as Usb Debug mode and allow installation installation apps from unknown sources 
-
+	
+  You can deploy the app on your device (For Android : connect it as Usb Debug mode and allow installation installation apps from unknown sources.
+	
+  If you wan't to run on IOS, you need to sign the XCode project (/platforms/ios/ApiCheckIn.xcodeproj) with your Apple Developper Account and then use the run ionic run command again.
 
