@@ -36,26 +36,24 @@ export class MapPage {
     this.geolocationOptions = {
         enableHighAccuracy: true      // Force GPS -> default value will be configurage by user
     };
-    
-    platform.ready().then(() => {
-        this.loadGoogleMaps();
-        this.locateUser();
-
-        if(this.checkInsVisible == true) {
-          this.checkInsVisible = false;
-          this.toggleCheckIns();
-        }
-    });
 
   }
 
 
-  ngOnInit() {
+  ngAfterViewInit() {
     console.log('ngOnInit MapPage');
+    this.platform.ready().then(() => {
+      this.loadGoogleMaps();
+      this.locateUser();
 
+      if(this.checkInsVisible == true) {
+        this.checkInsVisible = false;
+        this.toggleCheckIns();
+      }
+    });
   }
 
-  loadGoogleMaps() {
+  private loadGoogleMaps() {
     this.map = new GoogleMap(document.getElementById('map'), {
       'backgroundColor': 'white',
       'controls': {
@@ -75,7 +73,7 @@ export class MapPage {
   }
 
 
-  locateUser() {
+  private locateUser() {
     this.map.getMyLocation(this.geolocationOptions).then((location) => {
       console.log("location success");
       console.log("lat = " + location.latLng.lat);
@@ -89,7 +87,7 @@ export class MapPage {
     })
   }
 
-  showUserPositionOnMap() {
+  private showUserPositionOnMap() {
 
     // create CameraPosition
     this.cameraPos = {
@@ -105,7 +103,7 @@ export class MapPage {
 
 
 
-  toggleCheckIns() {
+  private toggleCheckIns() {
     console.log('toggleCheckIns');
       
     if(this.checkInsVisible == true) {
@@ -132,7 +130,7 @@ export class MapPage {
 
   }
 
-  showOnMap(){
+  private showOnMap(){
     this.locateUser();
     this.navCtrl.push(SendPage, {
       userPositionLat : this.userPosition.lat,
