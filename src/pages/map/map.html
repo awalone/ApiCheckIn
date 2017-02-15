@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
   
-    <ion-buttons start>
+    <ion-buttons left start>
       <button ion-button icon-left (click)="toggleCheckIns()" color="secondary" *ngIf="checkInsVisible == false">
         <ion-icon name="md-pin"></ion-icon>
         Check Ins
@@ -10,10 +10,15 @@
         <ion-icon name="md-pin"></ion-icon>
         Check Ins
       </button>
+      
     </ion-buttons>
 
-    <ion-title start>Map</ion-title>
-    <ion-buttons end>
+    <ion-title class="center">Map</ion-title>
+    
+
+
+
+    <ion-buttons right end>
       <button ion-button icon-left (click)="share()">
         <ion-icon name="md-share"></ion-icon>
         Share
