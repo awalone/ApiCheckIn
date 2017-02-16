@@ -13,6 +13,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 
 import { ConfigService } from '../providers/config';
 import { AuthService } from '../providers/auth-service';
+import { DataService } from '../providers/data-service';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,6 @@ import { AuthService } from '../providers/auth-service';
     SettingsPage,
     TabsPage
   ],
-  providers: [ConfigService, AuthService, {provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [ConfigService, AuthService, DataService, {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}

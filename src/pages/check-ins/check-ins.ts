@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { Platform, NavController, LoadingController, Loading, AlertController } from 'ionic-angular';
 
+import { ConfigService } from '../../providers/config';
+import { DataService } from '../../providers/data-service';
+
+
 import {
  GoogleMap,
  GoogleMapsEvent,
@@ -22,15 +26,33 @@ import {
 })
 export class CheckInsPage {
 
-  displayType;
+  displayType: string;
 
-  constructor(public platform: Platform, public navCtrl: NavController, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
+  lastChekins : Array<Object>;
 
+  constructor ( public platform: Platform, 
+                public navCtrl: NavController,
+                private config: ConfigService,
+                private data: DataService,
+                public loadingCtrl: LoadingController, 
+                public alertCtrl: AlertController
+  ) {
     this.displayType = "list";
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CheckInsPage');
+    
+    this.loadLastCheckins();
+    console.log(JSON.stringify(this.lastChekins));
   }
 
+  private loadLastCheckins(){
+    this.data.requestApi(this.config.apiVerbs.checkin).subscribe(
+      res => this.lastChekins = res,
+      error => console.log("error loading last checkins"),
+      () => console.log("last checkins loaded")
+    )
+  }
+  
 }

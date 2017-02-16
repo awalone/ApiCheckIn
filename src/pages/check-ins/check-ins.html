@@ -29,21 +29,20 @@
 <ion-content [ngSwitch]="displayType">
 
   <ion-list *ngSwitchCase="'list'">
-    <ion-card>
-
+    <ion-card *ngFor="let checkin of lastChekins">
       <ion-item>
         <ion-avatar item-left>
-          <img src="../../assets/no-image-available.png">
+          <img *ngIf="checkin.user.picture_url != null" [src]="checkin.user.picture_url">
+          <img *ngIf="checkin.user.picture_url == null" src="../../assets/no-image-available.png">
         </ion-avatar>
-        <h2>LIST</h2>
-        <p>email</p>
+        <h2>{{checkin.user.name}}</h2>
+        <p>{{checkin.user.email}}</p>
       </ion-item>
 
-      <img src="../../assets/no-image-available.png">
+      <img *ngIf="checkin.image_path != null" [src]="checkin.image_path">
 
-      <ion-card-content>
-        <p></p>
-      </ion-card-content>
+      <!-- <ion-card-content>
+      </ion-card-content> -->
 
       <ion-row>
         <ion-col center text-center>
