@@ -2,9 +2,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { SendPage } from '../pages/send/send';
-import { ListPage } from '../pages/list/list';
-import { MapPage } from '../pages/map/map';
+import { SharePage } from '../pages/share/share';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { CheckInsPage } from '../pages/check-ins/check-ins';
@@ -18,9 +16,7 @@ import { DataService } from '../providers/data-service';
 @NgModule({
   declarations: [
     MyApp,
-    SendPage,
-    ListPage,
-    MapPage,
+    SharePage,
     LoginPage,
     RegisterPage,
     CheckInsPage,
@@ -33,9 +29,7 @@ import { DataService } from '../providers/data-service';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    SendPage,
-    ListPage,
-    MapPage,
+    SharePage,
     LoginPage,
     RegisterPage,
     CheckInsPage,

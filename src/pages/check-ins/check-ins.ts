@@ -28,6 +28,11 @@ export class CheckInsPage {
 
   displayType: string;
 
+  map: GoogleMap;
+  geolocationOptions: any;
+  userPosition: GoogleMapsLatLng;
+  cameraPos: CameraPosition
+
   lastChekins : Array<Object>;
 
   constructor ( public platform: Platform, 
@@ -38,13 +43,24 @@ export class CheckInsPage {
                 public alertCtrl: AlertController
   ) {
     this.displayType = "list";
+    this.geolocationOptions = {
+      enableHighAccuracy: true      // Force GPS -> default value will be configurage by user
+    };
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CheckInsPage');
     
-    this.loadLastCheckins();
-    console.log(JSON.stringify(this.lastChekins));
+    
+
+    this.platform.ready().then(() => {
+      this.loadLastCheckins();
+      this.loadGoogleMaps();
+      this.locateUser();
+      }
+    );
+
+
   }
 
   private loadLastCheckins(){
@@ -55,4 +71,61 @@ export class CheckInsPage {
     )
   }
   
+  doRefresh(refresher) {
+    console.log('Begin refresh', refresher);
+    setTimeout(() => {
+      console.log('Refresh finished');
+      this.loadLastCheckins();
+      refresher.complete();
+    }, 1000);
+  }
+
+  private loadGoogleMaps() {
+    this.map = new GoogleMap(document.getElementById('map'), {
+      'backgroundColor': 'white',
+      'controls': {
+        'compass': true,
+        'myLocationButton': true,
+        'indoorPicker': true,
+        'zoom': true
+      },
+      'gestures': {
+        'scroll': true,
+        'tilt': true,
+        'rotate': true,
+        'zoom': true
+      }
+    });
+    this.map.one(GoogleMapsEvent.MAP_READY).then(() => console.log('Map is ready!'));
+  }
+
+  private locateUser() {
+    this.map.getMyLocation(this.geolocationOptions).then((location) => {
+      console.log("location success");
+      console.log("lat = " + location.latLng.lat);
+      console.log("lng = " + location.latLng.lng);
+
+      this.userPosition = new GoogleMapsLatLng(location.latLng.lat, location.latLng.lng);
+
+      this.showUserPositionOnMap();
+    }).catch((error) => {
+      console.log("location error : " + error);
+    })
+  }
+
+  private showUserPositionOnMap() {
+
+    // create CameraPosition
+    this.cameraPos = {
+      target: this.userPosition,
+      zoom: 18,
+      tilt: 30
+    };
+
+    // move the map's camera to position
+    this.map.moveCamera(this.cameraPos);
+
+  }
+
+
 }
