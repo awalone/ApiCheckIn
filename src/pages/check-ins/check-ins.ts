@@ -39,7 +39,8 @@ export class CheckInsPage {
   checkinPosition: GoogleMapsLatLng;
   cameraPos: CameraPosition
 
-  lastChekins : Array<Object>;
+  lastCheckins : Array<Object>;
+  lastCheckinsLoaded : boolean;
 
   constructor ( public platform: Platform, 
                 public navCtrl: NavController,
@@ -57,26 +58,34 @@ export class CheckInsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad CheckInsPage');
     
-    
-
     this.platform.ready().then(() => {
-      this.loadLastCheckins();
       this.loadGoogleMaps();
-      // this.locateUser();
-      }
-    );
-
-
+      // this.loadLastCheckins();
+    });
   }
 
   private loadLastCheckins(){
     this.data.requestApi(this.config.apiVerbs.checkin).subscribe(
-      res => this.lastChekins = res,
+      res => this.lastCheckins = res,
       error => console.log("error loading last checkins"),
-      () => console.log("last checkins loaded")
+      () => {
+        console.log("last checkins loaded")
+      
+        for(var checkin in this.lastCheckins){
+          this.map.addMarker({
+            'position': new GoogleMapsLatLng(this.lastCheckins[checkin]['lat'], this.lastCheckins[checkin]['lng']),
+            'title': this.lastCheckins[checkin]['user']['name']
+          });
+        }
+        
+      }
     )
   }
   
+
+
+
+
   doRefresh(refresher) {
     console.log('Begin refresh', refresher);
     setTimeout(() => {
@@ -105,9 +114,8 @@ export class CheckInsPage {
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       console.log('Map is ready!')
       this.locateUser();
-      
-    }
-    );
+      this.loadLastCheckins();
+    });
   }
 
   private locateUser() {

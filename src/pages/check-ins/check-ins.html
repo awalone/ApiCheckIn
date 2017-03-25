@@ -35,7 +35,7 @@
   </ion-refresher>
 
   <ion-list [hidden]="displayType != 'list'">
-    <ion-card *ngFor="let checkin of lastChekins">
+    <ion-card *ngFor="let checkin of lastCheckins">
       <ion-item>
         <ion-avatar item-left>
           <img *ngIf="checkin.user.picture_url != null" [src]="checkin.user.picture_url">
@@ -58,7 +58,7 @@
           </button>
         </ion-col>
         <ion-col center text-center>
-          <button ion-button icon-left clear small (click)="showCheckinOnMap(45.189916, 5.760180)">
+          <button ion-button icon-left clear small (click)="showCheckinOnMap(checkin.lat, checkin.lng)">
             <ion-icon name="md-map"></ion-icon>
             <div>Show on Map</div>
           </button>
