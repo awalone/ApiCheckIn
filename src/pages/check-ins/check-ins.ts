@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { Platform, NavController, LoadingController, Loading, AlertController } from 'ionic-angular';
+import {  Platform, 
+          NavController, 
+          LoadingController, 
+          Loading, 
+          AlertController 
+} from 'ionic-angular';
 
 import { ConfigService } from '../../providers/config';
 import { DataService } from '../../providers/data-service';
@@ -31,6 +36,7 @@ export class CheckInsPage {
   map: GoogleMap;
   geolocationOptions: any;
   userPosition: GoogleMapsLatLng;
+  checkinPosition: GoogleMapsLatLng;
   cameraPos: CameraPosition
 
   lastChekins : Array<Object>;
@@ -56,7 +62,7 @@ export class CheckInsPage {
     this.platform.ready().then(() => {
       this.loadLastCheckins();
       this.loadGoogleMaps();
-      this.locateUser();
+      // this.locateUser();
       }
     );
 
@@ -96,7 +102,12 @@ export class CheckInsPage {
         'zoom': true
       }
     });
-    this.map.one(GoogleMapsEvent.MAP_READY).then(() => console.log('Map is ready!'));
+    this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
+      console.log('Map is ready!')
+      this.locateUser();
+      
+    }
+    );
   }
 
   private locateUser() {
@@ -106,7 +117,6 @@ export class CheckInsPage {
       console.log("lng = " + location.latLng.lng);
 
       this.userPosition = new GoogleMapsLatLng(location.latLng.lat, location.latLng.lng);
-
       this.showUserPositionOnMap();
     }).catch((error) => {
       console.log("location error : " + error);
@@ -114,17 +124,31 @@ export class CheckInsPage {
   }
 
   private showUserPositionOnMap() {
-
     // create CameraPosition
     this.cameraPos = {
       target: this.userPosition,
-      zoom: 18,
-      tilt: 30
+      zoom: 18
     };
 
     // move the map's camera to position
     this.map.moveCamera(this.cameraPos);
+  }
 
+
+  private showCheckinOnMap(lat, lng) {
+
+    this.displayType = "map";
+
+    this.checkinPosition = new GoogleMapsLatLng(lat, lng);
+
+    // create CameraPosition
+    this.cameraPos = {
+      target: this.checkinPosition,
+      zoom: 18
+    };
+
+    // move the map's camera to position
+    this.map.moveCamera(this.cameraPos);
   }
 
 
