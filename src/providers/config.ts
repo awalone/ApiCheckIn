@@ -11,7 +11,8 @@ import 'rxjs/add/operator/map';
 export class ConfigService {
   
   apiUrl :string = " http://checkin-api.dev.cap-liberte.com";
-
+  GoogleMapsApiKey = "AIzaSyDE99utD1l0leasTivb7AuNw_Qk1DzSY2c"; // API KEY FOR ADDRESS REQUEST SEARCH FROM POSITION (lat, lng)
+  
   apiVerbs = {
       auth: "/auth",                  // POST(email, password)-> return a token
 

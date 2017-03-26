@@ -42,6 +42,7 @@
           <img *ngIf="checkin.user.picture_url == null" src="assets/noprofile.png">
         </ion-avatar>
         <h2>{{checkin.user.name}}</h2>
+        <p>{{checkin.timeDifferenceFromNow}}</p>
         <p>{{checkin.formatted_address}}</p>
       </ion-item>
 

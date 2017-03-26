@@ -8,7 +8,7 @@ import {  Platform,
 
 import { ConfigService } from '../../providers/config';
 import { DataService } from '../../providers/data-service';
-
+import * as moment from 'moment';
 
 import {
  GoogleMap,
@@ -75,43 +75,48 @@ export class CheckInsPage {
         for(var checkin in this.lastCheckins){
 
 
+          //  this.lastCheckins[checkin]['timeDifferenceFromNow'] = moment('2015-06-24 19:57:00', "YYYYMMDD").fromNow();
+          this.lastCheckins[checkin]['timeDifferenceFromNow'] = moment(this.lastCheckins[checkin]['created_at'], "YYYYMMDD").fromNow();
+          //  this.lastCheckins[checkin]['timeDifferenceFromNow'] = moment(this.lastCheckins[checkin]['created_at'], "YYYYMMDD").fromNow();
 
-         this.data.getCityNameFromLatLng(this.lastCheckins[checkin]['lat'], this.lastCheckins[checkin]['lng']).subscribe(
-             res => {
-              //  this.lastCheckins[checkin]['formatted_address'] = res['results'][0]['formatted_address']
-               console.log(res['results'])
-              }
-          )
-          
+          //  console.log(this.lastCheckins[checkin]['created_at'])
+          console.log(this.lastCheckins[checkin]['timeDifferenceFromNow'])
 
 
 
+          //  this.data.getCityNameFromLatLng(this.lastCheckins[checkin]['lat'], this.lastCheckins[checkin]['lng']).subscribe(
+          //      res => {
+          //       //  this.lastCheckins[checkin]['formatted_address'] = res['results'][0]['formatted_address']
+          //        console.log(res['results'])
 
+          //       }
+          //   )
+            
 
           this.markerIconUrl = this.lastCheckins[checkin]['user']['picture_url'];
           if(this.markerIconUrl == null) {
             this.markerIconUrl = "/assets/noprofile.png";
           }
           
- 
 
-          this.map.addMarker({
-            'position': new GoogleMapsLatLng(this.lastCheckins[checkin]['lat'], this.lastCheckins[checkin]['lng']),
-            'title': this.lastCheckins[checkin]['user']['name'],
-            "snippet": this.lastCheckins[checkin]['user']['name'],
-            'icon': {
-              'url': this.markerIconUrl,
-              'anchor': [35, 35],
-              'size': {
-                width: 30,
-                height: 30
-              },
-            },
-            'styles' : {
-              'text-align': 'center',
-              'font-weight': 'bold'
-            }
-          });
+
+          // this.map.addMarker({
+          //   'position': new GoogleMapsLatLng(this.lastCheckins[checkin]['lat'], this.lastCheckins[checkin]['lng']),
+          //   'title': this.lastCheckins[checkin]['user']['name'],
+          //   "snippet": this.lastCheckins[checkin]['user']['name'],
+          //   'icon': {
+          //     'url': this.markerIconUrl,
+          //     'anchor': [35, 35],
+          //     'size': {
+          //       width: 30,
+          //       height: 30
+          //     },
+          //   },
+          //   'styles' : {
+          //     'text-align': 'center',
+          //     'font-weight': 'bold'
+          //   }
+          // });
 
         
         }
