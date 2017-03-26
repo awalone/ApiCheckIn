@@ -17,9 +17,17 @@ export class DataService {
   }
 
 
-  public requestApi(verb:string) {
+  public get(verb:string) {
     return this.http.get(this.config.apiUrl + verb).map ( 
       res => res.json()
     )
   }
+
+  public getCityNameFromLatLng(lat, lng) {
+    return this.http.get("http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + ", " + lng + "&sensor=true").map ( 
+      res => res.json()
+    )
+  }
+
+
 }
