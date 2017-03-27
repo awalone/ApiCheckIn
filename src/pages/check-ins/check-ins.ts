@@ -59,7 +59,7 @@ export class CheckInsPage {
     
     this.platform.ready().then(() => {
       this.loadGoogleMaps();
-      // this.loadLastCheckins();
+      this.loadLastCheckins();
       
     });
   }
@@ -114,7 +114,10 @@ export class CheckInsPage {
   }
   
 
-
+cardSwipeEvent(event, lat, lng) {
+  console.log(event);
+  console.log("SWIPE : lat " + lat + ", lng" + lng)
+}
 
 
   doRefresh(refresher) {
@@ -145,7 +148,7 @@ export class CheckInsPage {
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       console.log('Map is ready!')
       this.locateUser();
-      this.loadLastCheckins();
+      // this.loadLastCheckins();
     });
   }
 
