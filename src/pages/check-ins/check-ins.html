@@ -25,6 +25,12 @@
 
 <ion-content>
 
+  <div class="fullScreenImageOverlay" padding [hidden]="!FullscreenImageDisplayed || displayType != 'list'" (tap)="toggleImageFullscreen(FullscreenImagePath)">
+    <div class="fullScreenImageOverlayWrapper">
+      <img class="img fullScreenImage" *ngIf="FullscreenImagePath != null" [src]="FullscreenImagePath">
+    </div>
+  </div>
+
   <ion-refresher (ionRefresh)="doRefresh($event)" [hidden]="displayType != 'list'">
     <ion-refresher-content
       pullingIcon="ion-load-d"
@@ -52,7 +58,7 @@
             </div>
           </div>
           
-          <img class="img" *ngIf="checkin.image_path != null" [src]="checkin.image_path" (tap)="cardTapEvent($event, checkin.image_path)">
+          <img class="img" *ngIf="checkin.image_path != null" [src]="checkin.image_path" (tap)="toggleImageFullscreen(checkin.image_path)">
           <!--<img *ngIf="checkin.image_path == null" src="assets/no-image-available.png">--> 
           <p class="center location">{{checkin.formatted_address}}</p>
         </ion-item>

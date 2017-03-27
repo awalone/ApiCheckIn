@@ -41,6 +41,10 @@ export class CheckInsPage {
 
   lastCheckins : Array<Object>;
 
+  FullscreenImageDisplayed: boolean;
+  FullscreenImagePath: String;
+
+
   constructor ( public platform: Platform, 
                 public navCtrl: NavController,
                 private config: ConfigService,
@@ -52,6 +56,7 @@ export class CheckInsPage {
     this.geolocationOptions = {
       enableHighAccuracy: true      // Force GPS -> default value will be configurage by user
     };
+    this.FullscreenImageDisplayed = false;
   }
 
   ionViewDidLoad() {
@@ -59,7 +64,7 @@ export class CheckInsPage {
     
     this.platform.ready().then(() => {
       this.loadGoogleMaps();
-      this.loadLastCheckins();
+      // this.loadLastCheckins();
       
     });
   }
@@ -83,8 +88,8 @@ export class CheckInsPage {
               this.lastCheckins[checkin]['formatted_address'] = "Location unknown";
               if(cityNameRes['status'] == "OK"){
                 this.lastCheckins[checkin]['formatted_address'] = cityNameRes['results'][2]['formatted_address'];
-                
-
+              }
+              if(this.lastCheckins[checkin]['lat'] != 0 || this.lastCheckins[checkin]['lng']) {
                 // ADD MARKER ON MAP
                 this.map.addMarker({
                   'position': new GoogleMapsLatLng(this.lastCheckins[checkin]['lat'], this.lastCheckins[checkin]['lng']),
@@ -96,17 +101,12 @@ export class CheckInsPage {
                   }
                 });
               }
+
             }, 
             error => console.log(error)
           )
             
 
-
-
-
-
-
-        
         }
         
       }
@@ -114,11 +114,16 @@ export class CheckInsPage {
   }
   
 
-cardTapEvent(event, imagePath) {
-  console.log(event);
-  console.log("SHOW IMAGE : "+ imagePath)
-}
+  toggleImageFullscreen(imagePath) {
 
+    if(this.FullscreenImageDisplayed == true) {
+      this.FullscreenImageDisplayed = false;
+    } else if (this.FullscreenImageDisplayed == false) {
+      this.FullscreenImageDisplayed = true;
+      this.FullscreenImagePath = imagePath;
+    }
+    
+  }
 
   doRefresh(refresher) {
     console.log('Begin refresh', refresher);
@@ -148,7 +153,7 @@ cardTapEvent(event, imagePath) {
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       console.log('Map is ready!')
       this.locateUser();
-      // this.loadLastCheckins();
+      this.loadLastCheckins();
     });
   }
 
