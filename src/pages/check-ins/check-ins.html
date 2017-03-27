@@ -47,17 +47,21 @@
       </ion-item>
 
       <img *ngIf="checkin.image_path != null" [src]="checkin.image_path">
-      <img *ngIf="checkin.image_path == null" src="assets/no-image-available.png">
+      <!--<img *ngIf="checkin.image_path == null" src="assets/no-image-available.png">-->
 
       <!-- <ion-card-content>
       </ion-card-content> -->
 
       <ion-row>
         <ion-col center text-center>
-          <button ion-button icon-left clear small>
+          <button ion-button icon-left clear small *ngIf="checkin.weather == null" disabled>
             <ion-icon name="md-cloud"></ion-icon>
             <div>Show Weather</div>
           </button>
+          <button ion-button icon-left clear small *ngIf="checkin.weather != null">
+            <ion-icon name="md-cloud"></ion-icon>
+            <div>Show Weather</div>
+          </button>          
         </ion-col>
         <ion-col center text-center>
           <button ion-button icon-left clear small (click)="showCheckinOnMap(checkin.lat, checkin.lng)">

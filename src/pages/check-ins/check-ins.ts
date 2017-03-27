@@ -40,7 +40,6 @@ export class CheckInsPage {
   cameraPos: CameraPosition
 
   lastCheckins : Array<Object>;
-  markerIconUrl : string;
 
   constructor ( public platform: Platform, 
                 public navCtrl: NavController,
@@ -60,63 +59,52 @@ export class CheckInsPage {
     
     this.platform.ready().then(() => {
       this.loadGoogleMaps();
-      this.loadLastCheckins();
+      // this.loadLastCheckins();
+      
     });
   }
 
   private loadLastCheckins(){
     this.data.get(this.config.apiVerbs.checkin).subscribe(
-      res => this.lastCheckins = res,
+      checkinRes => this.lastCheckins = checkinRes,
       error => console.log("error loading last checkins"),
       () => {
         console.log("last checkins loaded")
       
 
-        for(var checkin in this.lastCheckins){
-
-
-          //  this.lastCheckins[checkin]['timeDifferenceFromNow'] = moment('2015-06-24 19:57:00', "YYYYMMDD").fromNow();
+        for(let checkin in this.lastCheckins){
+          // CHECKIN TIME DIFFERENCE FROM NOW
           this.lastCheckins[checkin]['timeDifferenceFromNow'] = moment(this.lastCheckins[checkin]['created_at'], "YYYYMMDD").fromNow();
-          //  this.lastCheckins[checkin]['timeDifferenceFromNow'] = moment(this.lastCheckins[checkin]['created_at'], "YYYYMMDD").fromNow();
 
-          //  console.log(this.lastCheckins[checkin]['created_at'])
-          console.log(this.lastCheckins[checkin]['timeDifferenceFromNow'])
+          
+          // SEARCH FOR CITY NAME FROM POSITION FROM GOOGLE MAPS
+          this.data.getCityNameFromLatLng(this.lastCheckins[checkin]['lat'], this.lastCheckins[checkin]['lng']).subscribe(
+            cityNameRes => {
+              this.lastCheckins[checkin]['formatted_address'] = "Location not found";
+              if(cityNameRes['status'] == "OK"){
+                this.lastCheckins[checkin]['formatted_address'] = cityNameRes['results'][2]['formatted_address'];
+                
 
-
-
-          //  this.data.getCityNameFromLatLng(this.lastCheckins[checkin]['lat'], this.lastCheckins[checkin]['lng']).subscribe(
-          //      res => {
-          //       //  this.lastCheckins[checkin]['formatted_address'] = res['results'][0]['formatted_address']
-          //        console.log(res['results'])
-
-          //       }
-          //   )
+                // ADD MARKER ON MAP
+                this.map.addMarker({
+                  'position': new GoogleMapsLatLng(this.lastCheckins[checkin]['lat'], this.lastCheckins[checkin]['lng']),
+                  'title': this.lastCheckins[checkin]['user']['name'],
+                  "snippet": this.lastCheckins[checkin]['formatted_address'],
+                  'styles' : {
+                    'text-align': 'center',
+                    'font-weight': 'bold'
+                  }
+                });
+              }
+            }, 
+            error => console.log(error)
+          )
             
 
-          this.markerIconUrl = this.lastCheckins[checkin]['user']['picture_url'];
-          if(this.markerIconUrl == null) {
-            this.markerIconUrl = "/assets/noprofile.png";
-          }
-          
 
 
-          // this.map.addMarker({
-          //   'position': new GoogleMapsLatLng(this.lastCheckins[checkin]['lat'], this.lastCheckins[checkin]['lng']),
-          //   'title': this.lastCheckins[checkin]['user']['name'],
-          //   "snippet": this.lastCheckins[checkin]['user']['name'],
-          //   'icon': {
-          //     'url': this.markerIconUrl,
-          //     'anchor': [35, 35],
-          //     'size': {
-          //       width: 30,
-          //       height: 30
-          //     },
-          //   },
-          //   'styles' : {
-          //     'text-align': 'center',
-          //     'font-weight': 'bold'
-          //   }
-          // });
+
+
 
         
         }
@@ -157,7 +145,7 @@ export class CheckInsPage {
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       console.log('Map is ready!')
       this.locateUser();
-      // this.loadLastCheckins();
+      this.loadLastCheckins();
     });
   }
 

@@ -24,7 +24,7 @@ export class DataService {
   }
 
   public getCityNameFromLatLng(lat, lng) {
-    return this.http.get("http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + ", " + lng + "&sensor=true").map ( 
+    return this.http.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=" + this.config.GoogleMapsApiKey).map ( 
       res => res.json()
     )
   }
