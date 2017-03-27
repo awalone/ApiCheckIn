@@ -10,4 +10,28 @@ page-check-ins {
     .center {
         text-align: center;
     }
+    .cardHeader{
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+    .avatar {
+        margin-right: 10px;
+    }
+
+    .cardRounded {
+        border-radius : 10px;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+    }
+
+    .location {
+        margin-top: 5px;
+    }
+
+    .ionList {
+        margin-bottom: 0px;
+    }
+
+     .img {
+        border-radius : 5px;
+    }
 }

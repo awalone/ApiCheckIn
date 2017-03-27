@@ -80,7 +80,7 @@ export class CheckInsPage {
           // SEARCH FOR CITY NAME FROM POSITION FROM GOOGLE MAPS
           this.data.getCityNameFromLatLng(this.lastCheckins[checkin]['lat'], this.lastCheckins[checkin]['lng']).subscribe(
             cityNameRes => {
-              this.lastCheckins[checkin]['formatted_address'] = "Location not found";
+              this.lastCheckins[checkin]['formatted_address'] = "Location unknown";
               if(cityNameRes['status'] == "OK"){
                 this.lastCheckins[checkin]['formatted_address'] = cityNameRes['results'][2]['formatted_address'];
                 
@@ -114,9 +114,9 @@ export class CheckInsPage {
   }
   
 
-cardSwipeEvent(event, lat, lng) {
+cardTapEvent(event, imagePath) {
   console.log(event);
-  console.log("SWIPE : lat " + lat + ", lng" + lng)
+  console.log("SHOW IMAGE : "+ imagePath)
 }
 
 

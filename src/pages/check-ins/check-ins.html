@@ -34,47 +34,52 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-list [hidden]="displayType != 'list'" *ngFor="let checkin of lastCheckins" >
-    <ion-card (swipe)="cardSwipeEvent($event, checkin.lat, checkin.lng)">
-      <ion-item>
-        <ion-avatar item-left>
-          <img *ngIf="checkin.user.picture_url != null" [src]="checkin.user.picture_url">
-          <img *ngIf="checkin.user.picture_url == null" src="assets/noprofile.png">
-        </ion-avatar>
-        <h2>{{checkin.user.name}}</h2>
-        <p>{{checkin.timeDifferenceFromNow}}</p>
-        <p>{{checkin.formatted_address}}</p>
-      </ion-item>
 
-      <img *ngIf="checkin.image_path != null" [src]="checkin.image_path">
-      <!--<img *ngIf="checkin.image_path == null" src="assets/no-image-available.png">-->
 
-      <!-- <ion-card-content>
-      </ion-card-content> -->
+  <ion-list class="ionList" [hidden]="displayType != 'list'" *ngFor="let checkin of lastCheckins" >
+    
+    <ion-card class="cardRounded" >
+      <ion-item-sliding>
+        <ion-item>
+          <div>
+            <ion-avatar class="cardHeader avatar">
+              <img *ngIf="checkin.user.picture_url != null" [src]="checkin.user.picture_url">
+              <img *ngIf="checkin.user.picture_url == null" src="assets/noprofile.png">
+            </ion-avatar>
+            <div class="cardHeader">
+              <h2>{{checkin.user.name}}</h2>
+              <p>{{checkin.timeDifferenceFromNow}}</p>
+            </div>
+          </div>
+          
+          <img class="img" *ngIf="checkin.image_path != null" [src]="checkin.image_path" (tap)="cardTapEvent($event, checkin.image_path)">
+          <!--<img *ngIf="checkin.image_path == null" src="assets/no-image-available.png">--> 
+          <p class="center location">{{checkin.formatted_address}}</p>
+        </ion-item>
+      <ion-item-options side="left">
 
-      <ion-row>
-        <ion-col center text-center>
-          <button ion-button icon-left clear small *ngIf="checkin.weather == null" disabled>
-            <ion-icon name="md-cloud"></ion-icon>
-            <div>Show Weather</div>
-          </button>
-          <button ion-button icon-left clear small *ngIf="checkin.weather != null">
-            <ion-icon name="md-cloud"></ion-icon>
-            <div>Show Weather</div>
-          </button>          
-        </ion-col>
-        <ion-col center text-center>
-          <button ion-button icon-left clear small (click)="showCheckinOnMap(checkin.lat, checkin.lng)" *ngIf="checkin.lat == 0 || checkin.lng == 0 " disabled>
-            <ion-icon name="md-map"></ion-icon>
-            <div>Show on Map</div>
-          </button>
-          <button ion-button icon-left clear small (click)="showCheckinOnMap(checkin.lat, checkin.lng)" *ngIf="checkin.lat != 0 || checkin.lng != 0 ">
-            <ion-icon name="md-map"></ion-icon>
-            <div>Show on Map</div>
-          </button>
-        </ion-col>
-      </ion-row>
+        <button color="secondary" ion-button *ngIf="checkin.weather == null" disabled>
+          <ion-icon name="md-cloud"></ion-icon>
+          Weather
+        </button>
+        <button color="secondary" ion-button *ngIf="checkin.weather != null">
+          <ion-icon name="md-cloud"></ion-icon>
+          Weather
+        </button>      
+      </ion-item-options>
+      <ion-item-options side="right">
+        <button ion-button (click)="showCheckinOnMap(checkin.lat, checkin.lng)" *ngIf="checkin.lat == 0 || checkin.lng == 0 " disabled>
+          <ion-icon name="md-map"></ion-icon>
+          Map
+        </button>
+        <button ion-button (click)="showCheckinOnMap(checkin.lat, checkin.lng)" *ngIf="checkin.lat != 0 || checkin.lng != 0 ">
+          <ion-icon name="md-map"></ion-icon>
+          Map
+        </button>     
+      </ion-item-options>
 
+
+      </ion-item-sliding>
     </ion-card>
   </ion-list>
   
