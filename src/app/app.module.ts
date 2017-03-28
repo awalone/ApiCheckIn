@@ -6,6 +6,7 @@ import { SharePage } from '../pages/share/share';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { CheckInsPage } from '../pages/check-ins/check-ins';
+import { UserDetailsPage } from '../pages/user-details/user-details';
 import { SettingsPage } from '../pages/settings/settings';
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -20,6 +21,7 @@ import { DataService } from '../providers/data-service';
     LoginPage,
     RegisterPage,
     CheckInsPage,
+    UserDetailsPage,
     SettingsPage,
     TabsPage
   ],
@@ -33,6 +35,7 @@ import { DataService } from '../providers/data-service';
     LoginPage,
     RegisterPage,
     CheckInsPage,
+    UserDetailsPage,
     SettingsPage,
     TabsPage
   ],

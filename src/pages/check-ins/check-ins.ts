@@ -8,6 +8,7 @@ import {  Platform,
 
 import { ConfigService } from '../../providers/config';
 import { DataService } from '../../providers/data-service';
+import { UserDetailsPage } from '../user-details/user-details';
 import * as moment from 'moment';
 
 import {
@@ -75,7 +76,7 @@ export class CheckInsPage {
       error => console.log("error loading last checkins"),
       () => {
         console.log("last checkins loaded")
-      
+        console.log(this.lastCheckins);
 
         for(let checkin in this.lastCheckins){
           // CHECKIN TIME DIFFERENCE FROM NOW
@@ -196,6 +197,17 @@ export class CheckInsPage {
 
     // move the map's camera to position
     this.map.moveCamera(this.cameraPos);
+  }
+
+  private showUserDetails(userData) {
+        this.navCtrl.push(
+          UserDetailsPage, {
+            userData: userData
+        });
+
+        // this.navCtrl.push(
+        //   UserDetailsPage
+        // );
   }
 
 
